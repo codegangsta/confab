@@ -10,12 +10,14 @@ import (
 var DB *mgo.Database
 
 func init() {
-	session, err := mgo.Dial(env.DatabaseURL)
+	session, err := mgo.Dial(env.Get("DATABASE_URL"))
 	if err != nil {
 		panic(err)
 	}
 
-	DB = session.DB(env.Database)
+	name := env.Get("DATABASE_NAME")
+	println("connecting to db:", name)
+	DB = session.DB(name)
 	Conversations = DB.C("conversations")
 }
 

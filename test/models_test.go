@@ -1,20 +1,10 @@
 package test
 
 import (
-	"github.com/codegangsta/confab/env"
 	"github.com/codegangsta/confab/models"
 	"labix.org/v2/mgo/bson"
 	"testing"
 )
-
-// drop the database
-func init() {
-	println("Database:", env.Database)
-	err := models.DB.DropDatabase()
-	if err != nil {
-		panic(err)
-	}
-}
 
 func Test_SavingConversation(t *testing.T) {
 	c := models.Conversation{
