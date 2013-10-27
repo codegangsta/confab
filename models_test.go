@@ -1,23 +1,22 @@
-package test
+package main_test
 
 import (
-	"github.com/codegangsta/confab/models"
 	"labix.org/v2/mgo/bson"
 	"testing"
 )
 
 func Test_SavingConversation(t *testing.T) {
-	c := models.Conversation{
+	c := Conversation{
 		Token:  "foobar",
 		Email1: "j1@gmail.com",
 		Email2: "j2@gmail.com",
 	}
 
-	err := models.Conversations.Insert(&c)
+	err := Conversations.Insert(&c)
 	expect(t, err, nil)
 
-	r := models.Conversation{}
-	err = models.Conversations.Find(bson.M{"token": "foobar"}).One(&r)
+	r := Conversation{}
+	err = Conversations.Find(bson.M{"token": "foobar"}).One(&r)
 	expect(t, err, nil)
 	expect(t, r.Token, "foobar")
 	expect(t, r.Email1, "j1@gmail.com")
@@ -26,13 +25,13 @@ func Test_SavingConversation(t *testing.T) {
 }
 
 func Test_CreateAndGetConversation(t *testing.T) {
-	c, err := models.CreateConversation("j1@gmail.com", "j2@gmail.com")
+	c, err := CreateConversation("j1@gmail.com", "j2@gmail.com")
 	expect(t, err, nil)
 	refute(t, len(c.Token), 0)
 	refute(t, len(c.Email1), 0)
 	refute(t, len(c.Email2), 0)
 
-	c2, err := models.GetConversation(c.Token)
+	c2, err := GetConversation(c.Token)
 	expect(t, err, nil)
 	expect(t, c2.Token, c.Token)
 }

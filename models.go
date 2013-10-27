@@ -1,21 +1,20 @@
-package models
+package main
 
 import (
-	"github.com/codegangsta/confab/env"
-	"github.com/codegangsta/confab/util"
 	"labix.org/v2/mgo"
 	"labix.org/v2/mgo/bson"
+	"os"
 )
 
 var DB *mgo.Database
 
 func init() {
-	session, err := mgo.Dial(env.Get("DATABASE_URL"))
+	session, err := mgo.Dial(os.Getenv("DATABASE_URL"))
 	if err != nil {
 		panic(err)
 	}
 
-	name := env.Get("DATABASE_NAME")
+	name := os.Getenv("DATABASE_NAME")
 	println("connecting to db:", name)
 	DB = session.DB(name)
 	Conversations = DB.C("conversations")
@@ -30,7 +29,7 @@ type Conversation struct {
 }
 
 func CreateConversation(email1 string, email2 string) (*Conversation, error) {
-	token := util.NewUUID().String()
+	token := NewUUID().String()
 
 	c := Conversation{
 		Token:  token,

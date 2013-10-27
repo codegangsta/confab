@@ -1,8 +1,7 @@
-package app
+package main
 
 import (
 	"encoding/json"
-	"github.com/codegangsta/confab/models"
 	"github.com/hoisie/web"
 )
 
@@ -25,7 +24,7 @@ func createConversation(c *web.Context) {
 		return
 	}
 
-	conversation, err := models.CreateConversation(email1, email2)
+	conversation, err := CreateConversation(email1, email2)
 	if err != nil {
 		c.Abort(500, "")
 		return
