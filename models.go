@@ -26,15 +26,19 @@ type Conversation struct {
 	Token  string `json:"token"`
 	Email1 string `json:"email1"`
 	Email2 string `json:"email2"`
+	Name1  string `json:"email1"`
+	Name2  string `json:"email2"`
 }
 
-func CreateConversation(email1 string, email2 string) (*Conversation, error) {
+func CreateConversation(email1 string, name1 string, email2 string, name2 string) (*Conversation, error) {
 	token := NewUUID().String()
 
 	c := Conversation{
 		Token:  token,
 		Email1: email1,
 		Email2: email2,
+		Name1:  name1,
+		Name2:  name2,
 	}
 
 	err := Conversations.Insert(&c)

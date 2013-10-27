@@ -18,13 +18,15 @@ func Run(host string) {
 func createConversation(c *web.Context) {
 	email1 := c.Request.PostFormValue("email1")
 	email2 := c.Request.PostFormValue("email2")
+	name1 := c.Request.PostFormValue("name1")
+	name2 := c.Request.PostFormValue("name2")
 
-	if len(email1) == 0 || len(email2) == 0 {
+	if len(email1) == 0 || len(email2) == 0 || len(name1) == 0 || len(name2) == 0 {
 		c.Abort(400, "Params missing")
 		return
 	}
 
-	conversation, err := CreateConversation(email1, email2)
+	conversation, err := CreateConversation(email1, name1, email2, name2)
 	if err != nil {
 		c.Abort(500, "")
 		return
