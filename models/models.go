@@ -22,9 +22,9 @@ func init() {
 var Conversations *mgo.Collection
 
 type Conversation struct {
-	Token  string
-	Email1 string
-	Email2 string
+	Token  string `json:"token"`
+	Email1 string `json:"email1"`
+	Email2 string `json:"email2"`
 }
 
 func CreateConversation(email1 string, email2 string) (*Conversation, error) {
