@@ -8,13 +8,13 @@ import (
 
 var DB *mgo.Database
 
-func init() {
-	session, err := mgo.Dial(os.Getenv("DATABASE_URL"))
+func InitDB() {
+	session, err := mgo.Dial(os.Getenv("DB_URL"))
 	if err != nil {
 		panic(err)
 	}
 
-	name := os.Getenv("DATABASE_NAME")
+	name := os.Getenv("DB_NAME")
 	println("connecting to db:", name)
 	DB = session.DB(name)
 	Conversations = DB.C("conversations")

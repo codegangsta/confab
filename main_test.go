@@ -1,17 +1,17 @@
-package main_test
+package main
 
 import (
-	"github.com/codegangsta/confab/env"
-	"github.com/codegangsta/confab/models"
 	"os"
 )
 
 func init() {
 	// override database name for testing purposes
-	os.Setenv("DATABASE_NAME", "confab_test")
+	os.Setenv("DB_NAME", "confab_test")
 
-	println("dropping db:", env.Get("DATABASE_NAME"))
-	err := models.DB.DropDatabase()
+	InitDB()
+
+	println("dropping db:", os.Getenv("DB_NAME"))
+	err := DB.DropDatabase()
 	if err != nil {
 		panic(err)
 	}
