@@ -15,8 +15,11 @@ func InitDB() {
 	}
 
 	name := os.Getenv("DB_NAME")
+	user := os.Getenv("DB_USER")
+	pass := os.Getenv("DB_PASS")
 	println("connecting to db:", name)
 	DB = session.DB(name)
+	DB.AddUser(user, pass, false)
 	Conversations = DB.C("conversations")
 }
 
