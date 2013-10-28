@@ -10,8 +10,8 @@ func Test_SavingConversation(t *testing.T) {
 		Token:  "foobar",
 		Email1: "j1@gmail.com",
 		Email2: "j2@gmail.com",
-    Name1: "Jeremy Saenz",
-    Name2: "Jordie Saenz",
+		Name1:  "Jeremy Saenz",
+		Name2:  "Jordie Saenz",
 	}
 
 	err := Conversations.Insert(&c)

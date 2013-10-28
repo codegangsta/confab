@@ -26,8 +26,8 @@ type Conversation struct {
 	Token  string `json:"token"`
 	Email1 string `json:"email1"`
 	Email2 string `json:"email2"`
-	Name1  string `json:"email1"`
-	Name2  string `json:"email2"`
+	Name1  string `json:"name1"`
+	Name2  string `json:"name2"`
 }
 
 func CreateConversation(email1 string, name1 string, email2 string, name2 string) (*Conversation, error) {
