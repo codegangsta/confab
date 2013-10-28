@@ -9,17 +9,23 @@ import (
 var DB *mgo.Database
 
 func InitDB() {
-	session, err := mgo.Dial(os.Getenv("DB_URL"))
+	name := os.Getenv("DB_NAME")
+	user := os.Getenv("DB_USER")
+	pass := os.Getenv("DB_PASS")
+	url := os.Getenv("DB_URL")
+
+	session, err := mgo.DialWithInfo(&mgo.DialInfo{
+		Username: user,
+		Password: pass,
+		Database: name,
+		Addrs:    []string{url},
+	})
 	if err != nil {
 		panic(err)
 	}
 
-	name := os.Getenv("DB_NAME")
-	user := os.Getenv("DB_USER")
-	pass := os.Getenv("DB_PASS")
 	println("connecting to db:", name)
 	DB = session.DB(name)
-	DB.AddUser(user, pass, false)
 	Conversations = DB.C("conversations")
 }
 
