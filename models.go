@@ -10,16 +10,8 @@ var DB *mgo.Database
 
 func InitDB() {
 	name := os.Getenv("DB_NAME")
-	user := os.Getenv("DB_USER")
-	pass := os.Getenv("DB_PASS")
-	url := os.Getenv("DB_URL")
 
-	session, err := mgo.DialWithInfo(&mgo.DialInfo{
-		Username: user,
-		Password: pass,
-		Database: name,
-		Addrs:    []string{url},
-	})
+	session, err := mgo.Dial(os.Getenv("DB_URL"))
 	if err != nil {
 		panic(err)
 	}
