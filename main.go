@@ -2,8 +2,10 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"github.com/codegangsta/confab/jobs"
 	"github.com/hoisie/web"
+	"os"
 	"strings"
 )
 
@@ -13,7 +15,8 @@ func main() {
 }
 
 func Run(host string) {
-	web.Post("/conversation", createConversation)
+	secret := os.Getenv("APP_SECRET")
+	web.Post(fmt.Sprintf("/%s/conversation", secret), createConversation)
 	web.Post("/mailgun/reply", mailgunReply)
 	web.Run(host)
 }
