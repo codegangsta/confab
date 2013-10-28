@@ -11,7 +11,7 @@ import (
 
 func main() {
 	InitDB()
-	Run("localhost:3000")
+	Run(":" + os.Getenv("PORT"))
 }
 
 func Run(host string) {
