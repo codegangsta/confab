@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/codegangsta/confab/jobs"
 	"github.com/hoisie/web"
+	"log"
 	"os"
 	"strings"
 )
@@ -36,14 +37,12 @@ func createConversation(c *web.Context) {
 
 	conversation, err := CreateConversation(email1, name1, email2, name2)
 	if err != nil {
-		c.Abort(500, "")
-		return
+		log.Panic(err)
 	}
 
 	result, err := json.Marshal(conversation)
 	if err != nil {
-		c.Abort(500, "")
-		return
+		log.Panic(err)
 	}
 
 	// send email, this should probably be queued via sidekiq
