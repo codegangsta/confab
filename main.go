@@ -18,6 +18,9 @@ func main() {
 
 func Run(host string) {
 	m := martini.Classic()
+	m.Get("/", func() string {
+		return "Welcome to confab!"
+	})
 	m.Post("/conversation", auth.Basic("kajabi", os.Getenv("APP_SECRET")), createConversation)
 	m.Post("/mailgun/reply", mailgunReply)
 	m.Run()
