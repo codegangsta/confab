@@ -2,10 +2,11 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
 	"github.com/codegangsta/confab/jobs"
-	"github.com/hoisie/web"
+	"github.com/codegangsta/martini"
+	"github.com/codegangsta/martini/auth"
 	"log"
+	"net/http"
 	"os"
 	"strings"
 )
@@ -16,23 +17,23 @@ func main() {
 }
 
 func Run(host string) {
-	secret := os.Getenv("APP_SECRET")
-	web.Post(fmt.Sprintf("/%s/conversation", secret), createConversation)
-	web.Post("/mailgun/reply", mailgunReply)
-	web.Run(host)
+	m := martini.Classic()
+	m.Post("/conversation", auth.Basic("kajabi", os.Getenv("APP_SECRET")), createConversation)
+	m.Post("/mailgun/reply", mailgunReply)
+	m.Run()
 }
 
-func createConversation(c *web.Context) {
-	email1 := c.Request.PostFormValue("email1")
-	email2 := c.Request.PostFormValue("email2")
-	name1 := c.Request.PostFormValue("name1")
-	name2 := c.Request.PostFormValue("name2")
-	subject := c.Request.PostFormValue("subject")
-	body := c.Request.PostFormValue("text")
+func createConversation(res http.ResponseWriter, req *http.Request) string {
+	email1 := req.PostFormValue("email1")
+	email2 := req.PostFormValue("email2")
+	name1 := req.PostFormValue("name1")
+	name2 := req.PostFormValue("name2")
+	subject := req.PostFormValue("subject")
+	body := req.PostFormValue("text")
 
 	if len(email1) == 0 || len(email2) == 0 || len(name1) == 0 || len(name2) == 0 || len(subject) == 0 || len(body) == 0 {
-		c.Abort(400, "Params missing")
-		return
+		res.WriteHeader(400)
+		return "Params missing"
 	}
 
 	conversation, err := CreateConversation(email1, name1, email2, name2)
@@ -55,23 +56,22 @@ func createConversation(c *web.Context) {
 		Body:    body,
 	})
 
-	c.ContentType("application/json")
-	c.WriteString(string(result))
+	res.Header().Set("Content-Type", "application/json")
+	return string(result)
 }
 
-func mailgunReply(c *web.Context) {
-	email := c.Request.PostFormValue("recipient")
+func mailgunReply(res http.ResponseWriter, req *http.Request) string {
+	email := req.PostFormValue("recipient")
 	sp := strings.Split(email, "@")
 	sp = strings.Split(sp[0], "+")
 	token := sp[0]
 	toIndex := sp[1]
 
-	subject := c.Request.PostFormValue("Subject")
-	body := c.Request.PostFormValue("stripped-text")
+	subject := req.PostFormValue("Subject")
+	body := req.PostFormValue("stripped-text")
 	conversation, err := GetConversation(token)
 	if err != nil {
-		c.Abort(200, "Conversation not found")
-		return
+		return "Conversation not found"
 	}
 
 	var name string
@@ -86,8 +86,7 @@ func mailgunReply(c *web.Context) {
 		to = conversation.Email2
 		index = "1"
 	} else {
-		c.Abort(200, "Conversation participant not found")
-		return
+		return "Conversation participant not found"
 	}
 
 	go jobs.SendMail(jobs.Mail{
@@ -99,5 +98,5 @@ func mailgunReply(c *web.Context) {
 		Body:    body,
 	})
 
-	c.WriteString("OK")
+	return "OK"
 }
