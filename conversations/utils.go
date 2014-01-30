@@ -1,4 +1,4 @@
-package main
+package conversations
 
 import (
 	"crypto/rand"

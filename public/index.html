@@ -1,0 +1,32 @@
+<html>
+  <head>
+    <title>Confab</title>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.3.0/pure-min.css">
+  </head>
+  <body style="margin-left: 40px;">
+    <h1>Create a conversation</h1>
+    <form action="/conversation" method="POST" class="pure-form pure-form-stacked">
+      <fieldset>
+        <label for="from">From</label>
+        <input type="text" id="from" name="from" />
+
+        <label for="from">From Email</label>
+        <input type="text" id="from_email" name="from_email" />
+
+        <label for="to">To</label>
+        <input type="text" id="to" name="to" />
+
+        <label for="to">To Email</label>
+        <input type="text" id="to_email" name="to_email" />
+
+        <label for="to">Subject</label>
+        <input type="text" id="subject" name="subject" />
+
+        <label for="message">Text</label>
+        <textarea id="message" name="text" cols="30" rows="10"></textarea>
+      </fieldset>
+
+      <input type="submit" class="pure-button pure-button-primary" />
+    </form>
+  </body>
+</html>
